@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<!--
+World for crazyflie trajectory tracking. This is a variant of bitcraze/crazyflie-simulation crazyflie_world.sdf
+(commit 7e93752, MIT License, Copyright (c) 2022 Bitcraze).
+
+Refer(https://github.com/bitcraze/crazyflie-simulation/blob/main/simulator_files/gazebo/worlds/crazyflie_world.sdf)
+
+Direct motor-speed command from controller + IMU feedback (no MulticopterVelocityControl).
+-->
+
+<sdf version="1.8">
+  <world name="cf_tracking">
+    
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+    
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    
+    <!-- In the world for every model, for every link, if IMU exists(defined in sdf), then
+    simulate IMU and publish the gyro and accelerometer readings-->
+    <plugin
+      filename="gz-sim-imu-system"
+      name="gz::sim::systems::Imu">
+    </plugin>
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+    <include>
+      <uri>model://crazyflie_tracking</uri>
+      <name>crazyflie</name>
+      <pose>0 0 0.05 0 0 0</pose>
+    </include>
+
+  </world>
+</sdf>
