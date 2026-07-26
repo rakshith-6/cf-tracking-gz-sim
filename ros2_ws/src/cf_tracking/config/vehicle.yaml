@@ -1,0 +1,19 @@
+# Crazyflie vehicle parameters: Values match sim/models/crazyflie_tracking/model.sdf
+
+# Flying mass = battery+body 28.3 + 4props x 0.08 + lighthouse pos deck 2.4 ~ 31.5 
+mass: 0.0315 
+gravity: 9.81
+
+inertia:
+  ixx: 16.571710e-06
+  iyy: 16.655602e-06
+  izz: 29.261652e-06
+# In kg m^2, off diagonals values are small, ignored by the controllers
+
+c_t: 2.076e-08 # N/(rad/s)^2, motorConstant
+moment_constant: 0.005964552 # in m, C_Q = momentConstant * c_t
+
+arm: 0.031 # in m, per axis rotor offset(not diagonal arm length)
+
+motor_speed_max: 2618.0 # in rad/s, maxRotVelocity
+motor_speed_min: 0.0
