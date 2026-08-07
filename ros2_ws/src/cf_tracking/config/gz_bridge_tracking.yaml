@@ -1,0 +1,43 @@
+# ros_gz_bridge config for the tracking simulation
+
+# Topic names match sim/models/crazyflie_tracking/model.sdf and
+# sim/worlds/cf_tracking.sdf(world sdf)
+
+# Gazebo publishes simulation time to a topic named /clock, so we create
+# ros topic of same name. The message format of gazebo is gz.msgs.Clock, but
+# ros uses rosgraph_msgs/msg/Clock, then we specify publishing direction
+# Its unidirection and ros can't publish back
+- gz_topic_name: /clock
+  ros_topic_name: /clock
+  gz_type_name: gz.msgs.Clock
+  ros_type_name: rosgraph_msgs/msg/Clock
+  direction: GZ_TO_ROS
+
+- gz_topic_name: /model/crazyflie/odometry
+  ros_topic_name: /crazyflie/odometry
+  gz_type_name: gz.msgs.Odometry
+  ros_type_name: nav_msgs/msg/Odometry
+  direction: GZ_TO_ROS
+
+# As Odometery.twist.angular is noisy, so we will use IMU angular velocity 
+# for roll, pitch and yaw rates
+- gz_topic_name: /crazyflie/imu
+  ros_topic_name: /crazyflie/imu
+  gz_type_name: gz.msgs.IMU
+  ros_type_name: sensor_msgs/msg/Imu
+  direction: GZ_TO_ROS
+
+# Actual rotor speeds(joint velocity*20), for logging/diagnostics
+- gz_topic_name: /world/cf_tracking/model/crazyflie/joint_state
+  ros_topic_name: /crazyflie/joint_states
+  gz_type_name: gz.msgs.Model
+  ros_type_name: sensor_msgs/msg/JointState
+  direction: GZ_TO_ROS
+
+# Motor speed command: The controller computes motor speeds and publishes
+# to /crazyflie/motor_speed, gazebo need these commands(so subscribes)
+- gz_topic_name: /crazyflie/command/motor_speed
+  ros_topic_name: /crazyflie/motor_speed
+  gz_type_name: gz.msgs.Actuators
+  ros_type_name: actuator_msgs/msg/Actuators
+  direction: ROS_TO_GZ
