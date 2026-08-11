@@ -205,7 +205,7 @@ class HarnessFlight(Node):
         '''
         self.cmd_pub = self.create_publisher(
                                 Actuators, '/crazyflie/motor_speed', 10)
-        qos = QoSProeffectivefile(depth=1, reliability=ReliabilityPolicy.BEST_EFFORT)
+        qos = QoSProfile(depth=1, reliability=ReliabilityPolicy.BEST_EFFORT)
         self.create_subscription(Odometry, '/crazyflie/odometry', self.on_odom, qos)
         self.create_subscription(Imu, '/crazyflie/imu', self.on_imu, qos)
 
